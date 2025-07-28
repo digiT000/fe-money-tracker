@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import axios from '@/lib/axios';
+import { AxiosError } from 'axios';
+import { ErrorModel } from '@/utils/interface/errorInterface';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { saveAccessToken } from '@/utils/saveAccesToken';
 
 interface FormAuthProps {
   email: string;
@@ -7,12 +12,12 @@ interface FormAuthProps {
 }
 
 function UseFormAuth(page: 'login' | 'register') {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormAuthProps>({
     email: '',
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -21,18 +26,32 @@ function UseFormAuth(page: 'login' | 'register') {
 
   async function handleAction() {
     try {
-      const url = page === 'login' ? `/login` : `/register`;
-      const response = await axios.post(url, formData);
-      console.log(response);
-      alert(response.data.message);
-    } catch (e) {}
-  }
+      const url = page === 'login' ? `/auth/login` : `/auth/register`;
+      const response = await axios.post(
+        url,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-  function handleLogin() {
-    alert(`Login Page ${formData.email}`);
-  }
-  function handleRegister() {
-    alert(`Register Page ${formData.email}`);
+      const userData = response.data;
+      saveAccessToken(userData.accessToken);
+
+      router.push('/app');
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        if (e.response) {
+          const error = e.response.data as ErrorModel;
+          toast.error(error.message);
+        } else {
+          toast.error('Something went wrong, please try again later');
+        }
+      }
+    }
   }
 
   return {

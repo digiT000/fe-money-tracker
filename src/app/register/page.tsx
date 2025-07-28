@@ -4,10 +4,13 @@ import Divider from '@/components/shared/divider';
 import Image from 'next/image';
 import FormAuth from '@/components/shared/FormAuth';
 import Link from 'next/link';
+import NavigationBar from '@/components/shared/NavigationBar';
 
 export default function Register() {
   return (
     <main>
+      <NavigationBar page={'auth'} />
+
       {/*AUTH NAVIGATON*/}
 
       <section className={'max-w-7xl mx-auto py-12 px-4'}>

@@ -4,11 +4,13 @@ import Divider from '@/components/shared/divider';
 import Image from 'next/image';
 import FormAuth from '@/components/shared/FormAuth';
 import Link from 'next/link';
+import NavigationBar from '@/components/shared/NavigationBar';
 
 export default function Login() {
   return (
     <main>
       {/*AUTH NAVIGATON*/}
+      <NavigationBar page={'auth'} />
 
       <section className={'max-w-7xl mx-auto py-12 px-4'}>
         <div className={'grid grid-cols-1  lg:grid-cols-2 gap-10'}>

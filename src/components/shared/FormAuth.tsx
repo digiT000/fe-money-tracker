@@ -15,7 +15,7 @@ function FormAuth({ page }: FormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <section className={'flex flex-col gap-10 w-full'}>
+    <section className={' flex flex-col gap-10 w-full'}>
       <div className={'flex flex-col gap-6'}>
         <div className={'flex flex-col gap-2 '}>
           <Label>Email</Label>

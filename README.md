@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💸 FE Money Tracker – Couple Expense
 
-## Getting Started
+A personal finance tracking app built with **Next.js 15** using the **App Router** architecture. This project is focused on helping couples manage shared and personal expenses more transparently.
 
-First, run the development server:
+> ⚠️ This project is currently in progress.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Features
+
+- 🧾 Track personal and shared expenses
+- 🧍‍♂️🧍‍♀️ Assign expenses to different owners
+- 💾 Server-side data syncing and caching
+- 🎨 Fully responsive and custom-designed UI
+
+---
+
+## 🛠️ Tech Stack
+
+| Category           | Tech Used                          |
+|--------------------|------------------------------------|
+| Framework          | [Next.js 15](https://nextjs.org/) |
+| HTTP Client        | [Axios](https://axios-http.com/)  |
+| State Management   | React Context API                 |
+| Data Fetching      | [TanStack Query](https://tanstack.com/query) |
+| Styling            | [Tailwind CSS](https://tailwindcss.com/) |
+| UI Components      | Custom components, [shadcn/ui](https://ui.shadcn.com/) |
+| Design             | Self-designed from scratch        |
+
+---
+
+## 📂 Project Structure (App Router)
+
+```
+app/
+├── layout.tsx
+├── page.tsx
+├── expenses/
+│   ├── page.tsx
+│   └── components/
+├── context/
+├── hooks/
+├── lib/
+├── styles/
+├── types/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/digiT000/fe-money-tracker.git
+   cd fe-money-tracker
+   ```
 
-## Learn More
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Run development server**
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📌 To Do (In Progress)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [ ] Authentication & user session
+- [ ] Expense filtering by date/category
+- [ ] Add/edit/delete Expeses functionality
+- [ ] Dashboard overview (summary, pie chart)
+- [ ] Mobile responsiveness polish
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🤝 Contributing
+
+This is a personal project, but feel free to fork it and experiment. PRs are welcome if you'd like to contribute ideas or improvements.
+
+---
+
+## 📃 License
+
+This project is licensed under the MIT License.
+
+---
+
+## Related Project
+I also build the backend, you can visit this [Repository](https://github.com/digiT000/be-money-tracker) 
+---
+
+## 🙋‍♂️ About Me
+
+Made with ❤️ by [Farel](https://github.com/digiT000)  
+I'm a frontend developer who loves building intuitive and useful products.

@@ -21,12 +21,9 @@ export function useEmailVerify() {
       }
     }
   }
-
   useEffect(() => {
     if (!emailToken) {
       setPageStatus('ERROR');
-
-      return;
     } else {
       verifyEmail(emailToken);
     }

@@ -7,5 +7,6 @@ export const OBJECT_STEP = {
 
 export interface OnboardingPageProps {
   step: number;
-  setStep?: (value: Object_State) => void;
+  handleAction: () => void;
+  onChange: (name: string, value: string) => void;
 }

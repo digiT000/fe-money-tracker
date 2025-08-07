@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spinner } from '@/components/ui/shadcn-io/spinner';
 
 interface ButtonProps {
   buttonVariant: 'btn-primary' | 'btn-secondary';
@@ -20,9 +21,10 @@ function Button({
   return (
     <button
       onClick={onClick}
-      disabled={isDisabled}
+      disabled={isDisabled || isLoading}
       className={`btn ${buttonVariant} ${className}`}
     >
+      {isLoading && <Spinner variant={'ellipsis'} height={20} width={20} />}
       {text}
     </button>
   );

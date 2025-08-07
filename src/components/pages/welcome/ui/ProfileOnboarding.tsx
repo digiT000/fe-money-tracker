@@ -6,44 +6,54 @@ import Button from '@/components/shared/Button';
 import React, { memo, useEffect, useState } from 'react';
 import { OnboardingPageProps } from '@/components/pages/welcome/type';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { AlertCircleIcon } from 'lucide-react';
+
+interface ProfileProps extends OnboardingPageProps {
+  profileData: { partner: string; you: string };
+}
 
 const ProfileOnboarding = memo(function ProfileOnboarding({
   step,
-  setStep,
-}: OnboardingPageProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  onChange,
+  handleAction,
+  profileData,
+}: ProfileProps) {
+  const [error, setError] = useState<string | null>(null);
 
-  const [profile, setProfile] = useState({
-    you: '',
-    partner: '',
-  });
-
-  function handleNextStep() {
-    if (setStep) {
-      const currentParams = new URLSearchParams(searchParams.toString());
-      currentParams.set('you', `${profile.you}`);
-      currentParams.set('partner', `${profile.partner}`);
-      router.replace(`${pathname}?${currentParams.toString()}`);
-
-      setStep('date_config');
+  function nextAndValidation() {
+    if (!profileData.you && !profileData.partner) {
+      setError('Please enter your name and your partner');
+      return;
+    } else if (!profileData.you) {
+      setError('Please enter your name');
+      return;
+    } else if (!profileData.partner) {
+      setError('Please enter your partner name');
+      return;
     }
+    handleAction();
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    onChange(name, value);
   }
 
+  // useEffect(() => {
+  //   const you = searchParams.get('you') || '';
+  //   const partner = searchParams.get('partner') || '';
+  //   setProfile({
+  //     you,
+  //     partner,
+  //   });
+  // }, [searchParams]);
+
   useEffect(() => {
-    const you = searchParams.get('you') || '';
-    const partner = searchParams.get('partner') || '';
-    setProfile({
-      you,
-      partner,
-    });
-  }, [searchParams]);
+    if (profileData.you && profileData.partner) {
+      setError(null);
+    }
+  }, [profileData]);
 
   return (
     <div className={'flex flex-col gap-8'}>
@@ -55,6 +65,15 @@ const ProfileOnboarding = memo(function ProfileOnboarding({
         }
       />
       <div className={'flex flex-col gap-6 max-w-md mx-auto w-full'}>
+        {error && (
+          <Alert
+            variant="destructive"
+            className={'flex justify-center items-center'}
+          >
+            <AlertCircleIcon />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
         <div className={'flex flex-col gap-2 items-center'}>
           <Label className={'text-center'}>Your Name 👤</Label>
           <Input
@@ -62,7 +81,7 @@ const ProfileOnboarding = memo(function ProfileOnboarding({
             placeholder={'Ex: Bambang'}
             className={'placeholder:text-center text-center'}
             type={'text'}
-            value={profile.you}
+            value={profileData.you}
             onChange={handleInputChange}
           />
         </div>
@@ -73,13 +92,13 @@ const ProfileOnboarding = memo(function ProfileOnboarding({
             placeholder={'Ex : Sarah'}
             className={'placeholder:text-center text-center'}
             type={'text '}
-            value={profile.partner}
+            value={profileData.partner}
             onChange={handleInputChange}
           />
         </div>
       </div>
       <Button
-        onClick={handleNextStep}
+        onClick={nextAndValidation}
         text={'Next: Set Your Budget Cycle'}
         isDisabled={false}
         buttonVariant={'btn-primary'}

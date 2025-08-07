@@ -11,8 +11,6 @@ export default function Register() {
     <main>
       <NavigationBar page={'auth'} />
 
-      {/*AUTH NAVIGATON*/}
-
       <section className={'max-w-7xl mx-auto py-12 px-4'}>
         <div className={'grid grid-cols-1  lg:grid-cols-2 gap-10'}>
           <div className={'hidden lg:inline-block'}>
@@ -55,7 +53,6 @@ export default function Register() {
 
             <Divider text={'Or Continue With'} />
 
-            {/*  Form Login*/}
             <FormAuth page={'register'} />
 
             <p className={'text-left text-neutral-900'}>

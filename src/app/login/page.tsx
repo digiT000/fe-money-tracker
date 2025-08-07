@@ -5,8 +5,16 @@ import Image from 'next/image';
 import FormAuth from '@/components/shared/FormAuth';
 import Link from 'next/link';
 import NavigationBar from '@/components/shared/NavigationBar';
+import { isAuthenticated } from '@/utils/api/isAuthenticated';
+import { redirect } from 'next/navigation';
 
-export default function Login() {
+export default async function Login() {
+  const authenticated = await isAuthenticated();
+
+  if (authenticated) {
+    redirect('/app');
+  }
+
   return (
     <main>
       {/*AUTH NAVIGATON*/}

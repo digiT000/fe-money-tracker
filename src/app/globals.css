@@ -30,10 +30,10 @@
     @apply text-sm text-neutral-700 leading-[150%]
   }
   .btn{
-    @apply h-10 rounded-md cursor-pointer px-5 flex items-center justify-center;
+    @apply h-10 rounded-md cursor-pointer px-5 flex items-center justify-center gap-2;
   }
   .btn-primary{
-    @apply bg-primary-500 text-white font-semibold
+    @apply bg-primary-500 text-white font-semibold disabled:cursor-not-allowed disabled:opacity-50
   }
 
 }

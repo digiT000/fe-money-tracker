@@ -2,21 +2,30 @@
 import React, { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Eye, EyeOff } from 'lucide-react';
+import { AlertCircleIcon, Eye, EyeOff } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import UseFormAuth from '@/hooks/useFormAuth';
+import { Alert, AlertTitle } from '@/components/ui/alert';
 
 interface FormProps {
   page: 'login' | 'register';
 }
 
 function FormAuth({ page }: FormProps) {
-  const { formData, handleChange, handleAction } = UseFormAuth(page);
+  const { formData, handleChange, handleAction, error, isLoading } =
+    UseFormAuth(page);
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <section className={' flex flex-col gap-10 w-full'}>
       <div className={'flex flex-col gap-6'}>
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircleIcon />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
+
         <div className={'flex flex-col gap-2 '}>
           <Label>Email</Label>
           <Input
@@ -51,6 +60,7 @@ function FormAuth({ page }: FormProps) {
       <Button
         onClick={handleAction}
         text={page === 'register' ? 'Register' : 'Login'}
+        isLoading={isLoading}
         isDisabled={false}
         buttonVariant={'btn-primary'}
         className={'w-full md:w-fit'}

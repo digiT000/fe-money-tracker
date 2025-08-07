@@ -7,9 +7,18 @@ import { Input } from '@/components/ui/input';
 import Button from '@/components/shared/Button';
 import { OnboardingPageProps } from '@/components/pages/welcome/type';
 
+interface DateConfigProps extends OnboardingPageProps {
+  date: number;
+  isLoading: boolean;
+}
+
 const DateConfigOnboarding = memo(function DateConfigOnboarding({
   step,
-}: OnboardingPageProps) {
+  date,
+  onChange,
+  handleAction,
+  isLoading,
+}: DateConfigProps) {
   return (
     <div className={'flex flex-col gap-8'}>
       <OnboardingHeader
@@ -23,11 +32,13 @@ const DateConfigOnboarding = memo(function DateConfigOnboarding({
         <div className={'flex flex-col gap-2 items-center'}>
           <Label className={'text-center'}>Set the Date 📅</Label>
           <Input
-            name={'you'}
+            name={'date'}
             className={'placeholder:text-center text-center'}
             type={'number'}
             min={1}
             max={31}
+            value={date}
+            onChange={(e) => onChange(e.target.name, e.target.value)}
           />
         </div>
       </div>
@@ -36,6 +47,8 @@ const DateConfigOnboarding = memo(function DateConfigOnboarding({
         isDisabled={false}
         buttonVariant={'btn-primary'}
         className={'mx-auto w-full sm:w-fit'}
+        isLoading={isLoading}
+        onClick={handleAction}
       />
       <p className={'sub-text opacity-50 text-center'}>
         You can always changes this later

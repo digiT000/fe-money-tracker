@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { ErrorModel } from '@/utils/interface/errorInterface';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { saveAccessToken } from '@/utils/saveAccesToken';
+import { PayloadUser, useUserActions } from '@/context/useContext';
 
 interface FormAuthProps {
   email: string;
@@ -12,12 +12,14 @@ interface FormAuthProps {
 }
 
 function UseFormAuth(page: 'login' | 'register') {
+  const { saveUserData } = useUserActions();
   const router = useRouter();
   const [formData, setFormData] = useState<FormAuthProps>({
     email: '',
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -25,7 +27,14 @@ function UseFormAuth(page: 'login' | 'register') {
   }
 
   async function handleAction() {
+    if (!formData.email || !formData.password) {
+      setError('Please enter email or password');
+      return;
+    }
+
     try {
+      setError(null);
+      setIsLoading(true);
       const url = page === 'login' ? `/auth/login` : `/auth/register`;
       const response = await axios.post(
         url,
@@ -39,9 +48,24 @@ function UseFormAuth(page: 'login' | 'register') {
       );
 
       const userData = response.data;
-      saveAccessToken(userData.accessToken);
-
-      router.push('/app');
+      if (page === 'login') {
+        const dataLogin: PayloadUser = {
+          user: {
+            name: userData.name,
+            email: userData.email,
+            isVerified: userData.isVerified,
+            isCompleteOnboarding: userData.isCompleteOnboarding,
+          },
+          status: 'SUCCESS',
+          accessToken: userData.accessToken,
+        };
+        saveUserData(dataLogin);
+      }
+      if (userData.isCompleteOnboarding) {
+        router.push('/app');
+      } else {
+        router.push('/welcome');
+      }
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response) {
@@ -51,6 +75,8 @@ function UseFormAuth(page: 'login' | 'register') {
           toast.error('Something went wrong, please try again later');
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -59,6 +85,7 @@ function UseFormAuth(page: 'login' | 'register') {
     handleChange,
     handleAction,
     isLoading,
+    error,
   };
 }
 

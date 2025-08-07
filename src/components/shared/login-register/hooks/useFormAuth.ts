@@ -31,11 +31,10 @@ function UseFormAuth(page: 'login' | 'register') {
       setError('Please enter email or password');
       return;
     }
-
     try {
       setError(null);
       setIsLoading(true);
-      const url = page === 'login' ? `/auth/login` : `/auth/register`;
+      const url = page === 'login' ? `/auth/login` : `/auth/register-user`;
       const response = await axios.post(
         url,
         {

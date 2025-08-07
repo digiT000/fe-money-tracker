@@ -2,7 +2,7 @@ import React from 'react';
 import Divider from '@/components/shared/divider';
 
 import Image from 'next/image';
-import FormAuth from '@/components/shared/FormAuth';
+import FormAuth from '@/components/shared/login-register/ui/FormAuth';
 import Link from 'next/link';
 import NavigationBar from '@/components/shared/NavigationBar';
 

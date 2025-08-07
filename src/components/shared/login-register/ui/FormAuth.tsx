@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { AlertCircleIcon, Eye, EyeOff } from 'lucide-react';
 import Button from '@/components/shared/Button';
-import UseFormAuth from '@/hooks/useFormAuth';
+import UseFormAuth from '@/components/shared/login-register/hooks/useFormAuth';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 
 interface FormProps {

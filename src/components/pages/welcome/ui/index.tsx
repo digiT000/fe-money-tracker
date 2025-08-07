@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import DateConfigOnboarding from '@/components/pages/welcome/ui/DateConfigOnboarding';
 import ProfileOnboarding from '@/components/pages/welcome/ui/ProfileOnboarding';
-import { useOnboarding } from '@/hooks/useOnboarding';
+import { useOnboarding } from '@/components/pages/welcome/hooks/useOnboarding';
 import useSession from '@/hooks/useSession';
 import { useUserState } from '@/context/useContext';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';

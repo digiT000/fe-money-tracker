@@ -1,5 +1,5 @@
 import axios from '@/lib/axios';
-import { OnbardingDataProps } from '@/hooks/useOnboarding';
+import { OnbardingDataProps } from '@/components/pages/welcome/hooks/useOnboarding';
 import { AxiosError } from 'axios';
 
 export interface OnboardingDataModel {

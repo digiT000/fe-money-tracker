@@ -23,6 +23,9 @@
     .title{
         @apply text-3xl font-semibold text-neutral-900
     }
+  .medium-title{
+    @apply text-xl font-semibold text-neutral-900
+  },
     .body-text {
       @apply text-base text-neutral-700 leading-[150%]
     }

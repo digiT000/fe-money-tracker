@@ -1,48 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import axios from '@/lib/axios';
-import { useUserActions, useUserState } from '@/context/useContext';
+import { useQuery } from '@tanstack/react-query';
+import { getUserSession } from '@/utils/api/getUserSession';
 
-function useSession() {
-  const { status } = useUserState();
-  const { saveUserData, fetchingUser, fetchingError } = useUserActions();
-  const isLoading = useMemo(
-    () => status === 'LOADING' || status === 'IDLE',
-    [status]
-  );
+function useSession(isAuthenticated: boolean = false) {
+  const { data: user, status } = useQuery({
+    queryKey: ['use_session'],
+    queryFn: getUserSession,
+    retry: 1,
+    staleTime: 1000 * 60 * 15, // 15 minutes
+    refetchOnWindowFocus: false,
+    enabled: isAuthenticated,
+  });
 
-  async function getUserSession() {
-    if (status === 'LOADING') {
-      return;
-    }
-    if (status === 'SUCCESS') {
-      return;
-    }
-
-    try {
-      fetchingUser();
-      const response = await axios.post(
-        '/auth/get-session',
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
-      if (response.status === 200) {
-        // const emailVerified: boolean = response?.data?.isVerified;
-
-        saveUserData(response.data);
-      }
-    } catch (e) {
-      fetchingError();
-    }
-  }
-
-  useEffect(() => {
-    getUserSession();
-  }, []);
-
-  return { isLoading, status };
+  return { user, status };
 }
 
 export default useSession;

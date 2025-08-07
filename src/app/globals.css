@@ -22,16 +22,22 @@
 @layer components {
     .title{
         @apply text-3xl font-semibold text-neutral-900
-    }
-  .medium-title{
-    @apply text-xl font-semibold text-neutral-900
-  },
+    },
+    .medium-title{
+      @apply text-xl font-semibold text-neutral-900
+    },
+    .small-title{
+      @apply text-sm font-bold text-neutral-900
+    },
     .body-text {
       @apply text-base text-neutral-700 leading-[150%]
     }
   .sub-text{
     @apply text-sm text-neutral-700 leading-[150%]
-  }
+  },
+  .small-text{
+    @apply text-xs text-neutral-700 leading-[150%]
+  },
   .btn{
     @apply h-10 rounded-md cursor-pointer px-5 flex items-center justify-center gap-2;
   }

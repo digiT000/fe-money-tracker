@@ -8,14 +8,21 @@ import {
   useReducer,
 } from 'react';
 import axios from '@/lib/axios';
+import SessionSync from '@/components/shared/SessionSync';
 
 type ActionTypes = 'SET_USER' | 'FETCHING_ERROR' | 'FETCHING_USER';
+
+interface PartnerProps {
+  id: string;
+  name: string;
+}
 
 interface UserProp {
   email: string;
   name: string;
   isVerified: boolean;
   isCompleteOnboarding: boolean;
+  partner: PartnerProps;
 }
 
 export interface PayloadUser {
@@ -41,7 +48,7 @@ const UserContextState = createContext<PayloadUser | null>(null);
 const initialState: PayloadUser = {
   user: null,
   accessToken: null,
-  status: 'IDLE',
+  status: 'LOADING',
 };
 
 function userReducer(state: PayloadUser, action: ActionReducer): PayloadUser {
@@ -71,8 +78,10 @@ function userReducer(state: PayloadUser, action: ActionReducer): PayloadUser {
 
 export function UserContextProvider({
   children,
+  isAuthencated,
 }: {
   children: React.ReactNode;
+  isAuthencated: boolean;
 }) {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
@@ -129,7 +138,10 @@ export function UserContextProvider({
 
   return (
     <UserContextState.Provider value={state}>
-      <UserContextAction value={actions}>{children}</UserContextAction>
+      <UserContextAction value={actions}>
+        <SessionSync isAuthenticated={isAuthencated} />
+        {children}
+      </UserContextAction>
     </UserContextState.Provider>
   );
 }

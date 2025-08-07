@@ -47,20 +47,22 @@ function UseFormAuth(page: 'login' | 'register') {
       );
 
       const userData = response.data;
+      console.log(userData);
       if (page === 'login') {
         const dataLogin: PayloadUser = {
           user: {
-            name: userData.name,
-            email: userData.email,
-            isVerified: userData.isVerified,
-            isCompleteOnboarding: userData.isCompleteOnboarding,
+            name: userData.user.name,
+            email: userData.user.email,
+            isVerified: userData.user.isVerified,
+            isCompleteOnboarding: userData.user.isCompleteOnboarding,
+            partner: userData.user.partner,
           },
           status: 'SUCCESS',
           accessToken: userData.accessToken,
         };
         saveUserData(dataLogin);
       }
-      if (userData.isCompleteOnboarding) {
+      if (userData.user.isCompleteOnboarding) {
         router.push('/app');
       } else {
         router.push('/welcome');

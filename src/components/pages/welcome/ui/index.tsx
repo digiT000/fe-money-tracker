@@ -3,15 +3,14 @@ import React, { useEffect } from 'react';
 import DateConfigOnboarding from '@/components/pages/welcome/ui/DateConfigOnboarding';
 import ProfileOnboarding from '@/components/pages/welcome/ui/ProfileOnboarding';
 import { useOnboarding } from '@/components/pages/welcome/hooks/useOnboarding';
-import useSession from '@/hooks/useSession';
 import { useUserState } from '@/context/useContext';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { useRouter } from 'next/navigation';
 
 function WelcomeOnboarding() {
   const router = useRouter();
-  const { isLoading } = useSession();
   const { status, user } = useUserState();
+
   const {
     onboardingData,
     step,
@@ -26,18 +25,18 @@ function WelcomeOnboarding() {
     }
   }, [user, router]);
 
-  if (isLoading) {
+  if (status === 'LOADING') {
     return (
       <div className={'w-full h-screen flex justify-center items-center'}>
         <Spinner variant={'circle'} />
       </div>
     );
   }
-  if (!isLoading && status === 'ERROR') {
+  if (status === 'ERROR') {
     return <p>Something went wrong</p>;
   }
 
-  if (user && !user.isCompleteOnboarding) {
+  if (status === 'SUCCESS' && user && !user.isCompleteOnboarding) {
     return (
       <section
         className={'h-full flex flex-col justify-center items-center px-4'}

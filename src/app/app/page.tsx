@@ -11,7 +11,9 @@ async function Page() {
   }
   return (
     <>
-      <NavigationBar page={'general'} />
+      <section className={'bg-[#DEFEFF] mb-10'}>
+        <NavigationBar page={'general'} />
+      </section>
       <MainContentSection />
     </>
   );

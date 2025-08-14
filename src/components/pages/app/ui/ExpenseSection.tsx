@@ -4,6 +4,8 @@ import { useExpenses } from '@/components/pages/app/hooks/useExpenses';
 import Skeleton from 'react-loading-skeleton';
 import ChipFilter from '@/components/shared/ChipFilter';
 import { useUserState } from '@/context/useContext';
+import ExpenseFilter from '@/components/pages/app/ui/ExpenseFilter';
+import { ExpenseOwner } from '@/utils/interface/expenseInterface';
 
 function ExpenseSection() {
   const { expenses, status, setExpenseOwner, expenseOwner } = useExpenses();
@@ -18,28 +20,12 @@ function ExpenseSection() {
         {statusUser === 'LOADING' ? (
           <Skeleton count={1} height={38} width={200} className={'my-4'} />
         ) : (
-          <div
-            className={'rounded-2xl overflow-hidden border border-[#005B5E]'}
-          >
-            <ChipFilter
-              name={'All'}
-              isActive={expenseOwner === 'all'}
-              id={'all'}
-              onClick={setExpenseOwner}
-            />
-            <ChipFilter
-              name={user?.mainPartner.name as string}
-              isActive={expenseOwner === (user?.mainPartner.id as string)}
-              id={user?.mainPartner.id as string}
-              onClick={setExpenseOwner}
-            />
-            <ChipFilter
-              name={user?.partner.name as string}
-              isActive={expenseOwner === (user?.partner.id as string)}
-              id={user?.partner.id as string}
-              onClick={setExpenseOwner}
-            />
-          </div>
+          <ExpenseFilter
+            expenseOwner={expenseOwner}
+            setExpenseOwner={setExpenseOwner}
+            partner={user?.partner as ExpenseOwner}
+            mainPartner={user?.mainPartner as ExpenseOwner}
+          />
         )}
       </div>
 

@@ -3,7 +3,7 @@ interface ExpenseCategory {
   name: string;
 }
 
-interface ExpenseOwner {
+export interface ExpenseOwner {
   id: string;
   name: string;
 }

@@ -1,21 +1,24 @@
 import { useUserState } from '@/context/useContext';
 import { useQuery } from '@tanstack/react-query';
 import { getExpenses } from '@/utils/api/getExpenses';
-import { ExpenseCardProps } from '@/components/shared/expense/ExpenseCard';
+import { ExpenseResponseAPI } from '@/utils/interface/expenseInterface';
+import { useState } from 'react';
 
 export function useExpenses() {
+  const [expenseOwner, setExpenseOwner] = useState('all');
+
   const { accessToken } = useUserState();
 
   const { data, status } = useQuery({
-    queryKey: ['expenses'],
-    queryFn: () => getExpenses(accessToken as string),
+    queryKey: ['expenses', expenseOwner],
+    queryFn: () => getExpenses(accessToken as string, expenseOwner),
     retry: 1,
     staleTime: 1000 * 60 * 15, // 15 minutes
     refetchOnWindowFocus: false,
     enabled: !!accessToken,
   });
-  const expenses = data?.expense?.data as ExpenseCardProps[];
+  const expenses = data?.expense?.data as ExpenseResponseAPI[];
   const nextCursor = data?.expense?.nextCursor as string;
 
-  return { expenses, nextCursor, status };
+  return { expenses, nextCursor, status, setExpenseOwner, expenseOwner };
 }

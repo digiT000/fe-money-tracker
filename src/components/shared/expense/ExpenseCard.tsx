@@ -1,5 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import { toRupiah } from '@/utils/helper/toRupiah';
 
 export interface ExpenseCardProps {
   id: string;
@@ -8,9 +9,18 @@ export interface ExpenseCardProps {
   amount: number;
   date: string;
   description: string;
+  bgCategory?: string;
 }
 
-function ExpenseCard(expenseData: ExpenseCardProps) {
+function ExpenseCard({
+  id,
+  amount,
+  date,
+  owner,
+  description,
+  category,
+  bgCategory,
+}: ExpenseCardProps) {
   return (
     <div
       role={'button'}
@@ -19,23 +29,21 @@ function ExpenseCard(expenseData: ExpenseCardProps) {
       }
     >
       <div className={'flex flex-col gap-2'}>
-        <p className={'text-sm text-neutral-700 opacity-75'}>
-          {dayjs(expenseData.date).format('DD MMM, YYYY')}
+        <p className={'text-xs text-neutral-700 opacity-75'}>
+          {dayjs(date).format('DD MMM, YYYY')}
         </p>
-        <h3 className={'font-bold text-lg text-neutral-900'}>
-          {expenseData.category}
-        </h3>
+        <h3 className={'font-bold text-lg text-neutral-900'}>{category}</h3>
         <div
           className={
             'flex items-center gap-2 text-sm text-neutral-700 opacity-75'
           }
         >
-          {expenseData.owner} | {expenseData.description}
+          <div className={'flex items-center gap-3'}>
+            <p>By {owner}</p>| <p>{description}</p>
+          </div>
         </div>
       </div>
-      <p className={'text-xl font-bold text-neutral-900'}>
-        {expenseData.amount}
-      </p>
+      <p className={'text-lg font-bold text-neutral-900'}>{toRupiah(amount)}</p>
     </div>
   );
 }

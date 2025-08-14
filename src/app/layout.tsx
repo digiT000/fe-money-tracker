@@ -5,11 +5,8 @@ import { Toaster } from '@/components/ui/sonner';
 import { UserContextProvider } from '@/context/useContext';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Providers from '@/app/providers';
 import { isAuthenticated } from '@/utils/api/isAuthenticated';
-
-const queryClient = new QueryClient();
 
 const nunitoSans = Nunito({
   variable: '--font-nunito',
@@ -33,7 +30,7 @@ export default async function RootLayout({
       <body className={`${nunitoSans.variable} font-main  antialiased`}>
         <Providers>
           <UserContextProvider isAuthencated={!!isAuthencated}>
-            <SkeletonTheme baseColor="#dedede" highlightColor="#444">
+            <SkeletonTheme baseColor="#f5f5f5" highlightColor="#fafafa">
               {children}
             </SkeletonTheme>
           </UserContextProvider>

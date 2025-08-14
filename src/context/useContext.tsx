@@ -23,6 +23,7 @@ interface UserProp {
   isVerified: boolean;
   isCompleteOnboarding: boolean;
   partner: PartnerProps;
+  mainPartner: PartnerProps;
 }
 
 export interface PayloadUser {

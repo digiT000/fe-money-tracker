@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
-import ExpenseCard, {
-  ExpenseCardProps,
-} from '@/components/shared/expense/ExpenseCard';
+
 import ExpenseSection from '@/components/pages/app/ui/ExpenseSection';
 
 function MainContentSection() {

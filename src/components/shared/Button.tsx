@@ -10,7 +10,6 @@ type CommonProps = {
   isLoading?: boolean;
 };
 
-// Use Omit to prevent prop conflicts between standard 'a' props and Next.js LinkProps
 type ButtonAsLink = CommonProps &
   Omit<React.ComponentPropsWithoutRef<'a'>, keyof LinkProps> &
   LinkProps;
@@ -20,7 +19,7 @@ type ButtonAsButton = CommonProps & React.ComponentPropsWithoutRef<'button'>;
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 function Button(props: ButtonProps) {
-  const commonClassName = `btn ${props.buttonVariant} ${props.className ?? ''}`;
+  const commonClassName = `${props.buttonVariant} ${props.className ?? ''}`;
   const content = (
     <>
       {props.isLoading && (
@@ -78,7 +77,7 @@ function Button(props: ButtonProps) {
     <button
       {...buttonProps}
       disabled={isDisabled || isLoading}
-      className={commonClassName}
+      className={`btn-base-style ${commonClassName}`}
     >
       {content}
     </button>

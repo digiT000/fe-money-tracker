@@ -24,15 +24,15 @@ function ExpenseFilter({
         onClick={setExpenseOwner}
       />
       <ChipFilter
-        name={mainPartner.name as string}
-        isActive={expenseOwner === (mainPartner.id as string)}
-        id={mainPartner.id as string}
+        name={(mainPartner?.name as string) || ''}
+        isActive={expenseOwner === (mainPartner?.id as string)}
+        id={mainPartner?.id as string}
         onClick={setExpenseOwner}
       />
       <ChipFilter
-        name={partner.name as string}
-        isActive={expenseOwner === (partner.id as string)}
-        id={partner.id as string}
+        name={partner?.name as string}
+        isActive={expenseOwner === (partner?.id as string)}
+        id={partner?.id as string}
         onClick={setExpenseOwner}
       />
     </div>

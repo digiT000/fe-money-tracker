@@ -7,6 +7,10 @@ import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Providers from '@/app/providers';
 import { isAuthenticated } from '@/utils/api/isAuthenticated';
+import { ModalProvider } from '@/context/modalContext';
+
+import ModalExpense from '@/components/shared/modal/ModalExpense';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 
 const nunitoSans = Nunito({
   variable: '--font-nunito',
@@ -30,9 +34,11 @@ export default async function RootLayout({
       <body className={`${nunitoSans.variable} font-main  antialiased`}>
         <Providers>
           <UserContextProvider isAuthencated={!!isAuthencated}>
-            <SkeletonTheme baseColor="#f5f5f5" highlightColor="#fafafa">
-              {children}
-            </SkeletonTheme>
+            <ModalProvider>
+              <SkeletonTheme baseColor="#f5f5f5" highlightColor="#fafafa">
+                {children}
+              </SkeletonTheme>
+            </ModalProvider>
           </UserContextProvider>
         </Providers>
 

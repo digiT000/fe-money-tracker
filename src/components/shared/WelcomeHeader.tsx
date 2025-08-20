@@ -19,7 +19,7 @@ function WelcomeHeader() {
     return (
       <div className={'flex flex-col gap-1'}>
         <h3 className={'text-sm font-bold text-neutral-900'}>
-          Welcome Back, {user?.name} & {user?.partner.name}
+          Welcome Back, {user?.name} & {user?.partner?.name || ''}
         </h3>
         <p className={'text-xs text-neutral-700'}>
           {dayjs(currentDate).format('dddd,MMM DD, YYYY')}

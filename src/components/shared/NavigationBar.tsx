@@ -17,9 +17,11 @@ function NavigationBar({ page }: NavigationProps) {
     <header
       className={`px-4 flex items-center py-5  max-w-7xl mx-auto ${page === 'welcome' ? 'justify-between' : ''}`}
     >
-      <div className={`${page === 'general' ? 'flex items-center gap-8' : ''}`}>
+      <div
+        className={`${page === 'general' ? 'flex items-center gap-8 w-full' : ''}`}
+      >
         <Image src={'/logo.svg'} height={24} width={150} alt={'logo'} />
-        {page === 'general' && <WelcomeHeader />}
+        {page === 'general' && <WelcomeHeader handleLogout={handleLogout} />}
       </div>
 
       {page === 'welcome' && <button onClick={handleLogout}>Logout</button>}

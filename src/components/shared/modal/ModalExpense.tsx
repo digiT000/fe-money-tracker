@@ -116,7 +116,7 @@ function ModalExpense() {
         ownerId: user.mainPartner.id as string,
       });
     }
-  }, [user?.mainPartner.id]);
+  }, [user]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

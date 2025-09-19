@@ -6,14 +6,21 @@ import { AlertCircleIcon, Eye, EyeOff } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import UseFormAuth from '@/components/shared/login-register/hooks/useFormAuth';
 import { Alert, AlertTitle } from '@/components/ui/alert';
+import dynamic from 'next/dynamic';
+
+const ModalSuccessRegister = dynamic(
+  () => import('@/components/shared/modal/ModalSuccesRegister')
+);
 
 interface FormProps {
   page: 'login' | 'register';
 }
 
 function FormAuth({ page }: FormProps) {
+  const [openSuccessRegister, setOpenSuccessRegister] =
+    useState<boolean>(false);
   const { formData, handleChange, handleAction, error, isLoading } =
-    UseFormAuth(page);
+    UseFormAuth(page, setOpenSuccessRegister);
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -65,6 +72,14 @@ function FormAuth({ page }: FormProps) {
         buttonVariant={'btn-primary'}
         className={'w-full md:w-fit'}
       />
+      {openSuccessRegister && (
+        <ModalSuccessRegister
+          email={formData.email}
+          isOpen={openSuccessRegister}
+          key={'Modal Success Register'}
+          setOpenSuccessRegister={setOpenSuccessRegister}
+        />
+      )}
     </section>
   );
 }

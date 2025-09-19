@@ -11,7 +11,10 @@ interface FormAuthProps {
   password: string;
 }
 
-function UseFormAuth(page: 'login' | 'register') {
+function UseFormAuth(
+  page: 'login' | 'register',
+  setOpenSuccessRegister?: (value: boolean) => void
+) {
   const { saveUserData } = useUserActions();
   const router = useRouter();
   const [formData, setFormData] = useState<FormAuthProps>({
@@ -20,6 +23,7 @@ function UseFormAuth(page: 'login' | 'register') {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -47,7 +51,6 @@ function UseFormAuth(page: 'login' | 'register') {
       );
 
       const userData = response.data;
-      console.log(userData);
       if (page === 'login') {
         const dataLogin: PayloadUser = {
           user: {
@@ -56,22 +59,31 @@ function UseFormAuth(page: 'login' | 'register') {
             isVerified: userData.user.isVerified,
             isCompleteOnboarding: userData.user.isCompleteOnboarding,
             partner: userData.user.partner,
+            mainPartner: userData.user.mainPartner,
           },
           status: 'SUCCESS',
           accessToken: userData.accessToken,
         };
         saveUserData(dataLogin);
-      }
-      if (userData.user.isCompleteOnboarding) {
-        router.push('/app');
+
+        if (userData.user.isCompleteOnboarding) {
+          router.push('/app');
+        } else {
+          router.push('/welcome');
+        }
       } else {
-        router.push('/welcome');
+        setRegisterSuccess(true);
+        if (setOpenSuccessRegister) {
+          setOpenSuccessRegister(true);
+        }
       }
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response) {
           const error = e.response.data as ErrorModel;
-          toast.error(error.message);
+          toast.error(
+            error?.message || 'Something went wrong, please try again later'
+          );
         } else {
           toast.error('Something went wrong, please try again later');
         }

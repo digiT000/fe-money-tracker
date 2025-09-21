@@ -1,24 +1,45 @@
 import { useUserState } from '@/context/useContext';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getExpenses } from '@/utils/api/getExpenses';
-import { ExpenseResponseAPI } from '@/utils/interface/expenseInterface';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export function useExpenses() {
   const [expenseOwner, setExpenseOwner] = useState('all');
 
   const { accessToken } = useUserState();
 
-  const { data, status } = useQuery({
+  const {
+    data: expenses,
+    status,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['expenses', expenseOwner],
-    queryFn: () => getExpenses(accessToken as string, expenseOwner),
-    retry: 1,
+    queryFn: (pageParam) =>
+      getExpenses(accessToken as string, expenseOwner, pageParam.pageParam),
+    initialPageParam: '',
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
     staleTime: 1000 * 60 * 15, // 15 minutes
     refetchOnWindowFocus: false,
     enabled: !!accessToken,
+    retry: 1,
   });
-  const expenses = data?.expense?.data as ExpenseResponseAPI[];
-  const nextCursor = data?.expense?.nextCursor as string;
 
-  return { expenses, nextCursor, status, setExpenseOwner, expenseOwner };
+  const nextCursor = useMemo(() => {
+    if (!expenses) {
+      return null;
+    }
+
+    return expenses.pages[expenses.pages.length - 1].nextCursor || null;
+  }, [expenses]);
+
+  return {
+    expenses,
+    status,
+    setExpenseOwner,
+    expenseOwner,
+    fetchNextPage,
+    isFetchingNextPage,
+    nextCursor,
+  };
 }

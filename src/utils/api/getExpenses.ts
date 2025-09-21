@@ -1,13 +1,23 @@
 import axios from '@/lib/axios';
+import { ExpenseResponseAPI } from '@/utils/interface/expenseInterface';
 
-export async function getExpenses(token: string, selectedOwner: string) {
+export async function getExpenses(
+  token: string,
+  selectedOwner: string,
+  nextCursor: string = '',
+  take: number = 10
+): Promise<{ data: ExpenseResponseAPI[]; nextCursor: string | null }> {
   if (!token) {
-    return [];
+    return {
+      data: [],
+      nextCursor: '',
+    };
   }
 
-  let url = '/expenses';
+  let url = `/expenses?cursor=${nextCursor}&take=${take}`;
+
   if (selectedOwner !== 'all') {
-    url = `${url}?ownerId=${selectedOwner}`;
+    url = `${url}&ownerId=${selectedOwner}`;
   }
 
   try {
@@ -17,8 +27,19 @@ export async function getExpenses(token: string, selectedOwner: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+
+    const expensesData: ExpenseResponseAPI[] = response.data.expense.data;
+    const updateCursor: string | null = response?.data?.expense?.nextCursor;
+
+    return {
+      data: expensesData,
+      nextCursor: updateCursor,
+    };
   } catch (e) {
-    return [];
+    console.error(e);
+    return {
+      data: [],
+      nextCursor: '',
+    };
   }
 }

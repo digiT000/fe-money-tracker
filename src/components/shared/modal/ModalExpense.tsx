@@ -23,7 +23,7 @@ export interface ExpenseData {
   ownerId: string;
 }
 
-function ModalExpense() {
+function ModalExpense({ expenseOwner }: { expenseOwner: string }) {
   const queryClient = useQueryClient();
   const { user, status, accessToken } = useUserState();
   const [open, setOpen] = useState<boolean>(false);
@@ -68,18 +68,25 @@ function ModalExpense() {
     mutationFn: (newExpense: ExpenseData) =>
       postNewExpense(newExpense, accessToken as string),
     onSuccess: (newCreatedExpense) => {
-      console.log(newCreatedExpense.data);
       if (Object.keys(newCreatedExpense).length !== 0) {
-        queryClient.setQueryData(['expenses'], (oldData: any) => {
+        queryClient.setQueryData(['expenses', expenseOwner], (oldData: any) => {
           // If the cache is empty, create a new array with the new expense
           if (!oldData) {
-            console.log(oldData);
-
             return [newCreatedExpense];
           }
+
+          const newPages = oldData.pages.map((page: any, index: number) => {
+            // Add the new post to the beginning of the first page
+            if (index === 0) {
+              return {
+                ...page,
+                data: [newCreatedExpense.data, ...page.data],
+              };
+            }
+            return page;
+          });
           // Otherwise, add the new expense to the end of the existing array
-          console.log(oldData);
-          return [...oldData, newCreatedExpense.data];
+          return { ...oldData, pages: newPages };
         });
       }
 

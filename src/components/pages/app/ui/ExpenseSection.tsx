@@ -7,7 +7,13 @@ import ExpenseFilter from '@/components/pages/app/ui/ExpenseFilter';
 import { ExpenseOwner } from '@/utils/interface/expenseInterface';
 import { useInView } from 'react-intersection-observer';
 
-function ExpenseSection() {
+function ExpenseSection({
+  expenseOwner,
+  setExpenseOwner,
+}: {
+  expenseOwner: string;
+  setExpenseOwner: (value: string) => void;
+}) {
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
@@ -16,12 +22,12 @@ function ExpenseSection() {
   const {
     expenses,
     status,
-    setExpenseOwner,
-    expenseOwner,
+
     fetchNextPage,
     isFetchingNextPage,
     nextCursor,
-  } = useExpenses();
+    isEmptyList,
+  } = useExpenses(expenseOwner);
   const { user, status: statusUser } = useUserState();
 
   useEffect(() => {
@@ -29,8 +35,7 @@ function ExpenseSection() {
       fetchNextPage();
     }
   }, [inView, status]);
-
-  console.log(nextCursor);
+  console.log({ expenses });
 
   return (
     <div className={'w-full flex flex-col gap-4'}>
@@ -55,7 +60,7 @@ function ExpenseSection() {
           <Skeleton count={5} height={120} className={'my-4'} />
         )}
 
-        {status === 'success' &&
+        {status === 'success' && !isEmptyList ? (
           expenses?.pages.map((data) => {
             return data.data.map((expense) => {
               return (
@@ -70,8 +75,11 @@ function ExpenseSection() {
                 />
               );
             });
-          })}
-        {isFetchingNextPage ? (
+          })
+        ) : (
+          <p>Data Kosong</p>
+        )}
+        {isEmptyList ? null : isFetchingNextPage ? (
           <Skeleton count={5} height={120} className={'my-4'} />
         ) : nextCursor !== null ? (
           <button ref={ref} onClick={() => fetchNextPage()}>
